@@ -33,7 +33,8 @@ function init() {
 	} );
 
 
-	var newLayer = new OpenLayers.Layer.OSM("Local Tiles", "tiles/${z}/${x}/${y}.png", {numZoomLevels: 19, alpha: true, isBaseLayer: true});
+	//var newLayer = new OpenLayers.Layer.OSM("Local Tiles", "tiles/${z}/${x}/${y}.png", {numZoomLevels: 19, alpha: true, isBaseLayer: true});
+	var newLayer = new OpenLayers.Layer.OSM( "Simple OSM Map");
 	map.addLayer(newLayer);
 
 	if( ! map.getCenter() ){
