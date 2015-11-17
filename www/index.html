@@ -3,7 +3,6 @@
     <title>OSM Local Tiles</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css" type="text/css" />
-	<script src="js/init.js"></script>
     <script src="OpenLayers.js"></script>
     <script type="text/javascript">
 var lat=52.2910937;
@@ -18,8 +17,11 @@ var style = {
     strokeWidth: 0
 }; 
         //Initialise the 'map' object
-function init() {
+function init(watch) {
 
+	OpenLayers.Util.onImageLoadError = function(){
+		 this.src = "noImage.png";
+	};
 	map = new OpenLayers.Map ("map", {
 		controls:[
 			new OpenLayers.Control.Navigation(),
@@ -35,11 +37,14 @@ function init() {
 		numZoomLevels: 19,
 		units: 'm',
 		projection: new OpenLayers.Projection("EPSG:900913"),
-		displayProjection: new OpenLayers.Projection("EPSG:4326")
+		displayProjection: new OpenLayers.Projection("EPSG:4326"),
+		
 	} );
-
+	
+	
 
 	var newLayer = new OpenLayers.Layer.OSM("Local Tiles", "tiles/${z}/${x}/${y}.png", {numZoomLevels: 19, alpha: true, isBaseLayer: true});
+	
 	map.addLayer(newLayer);
 
 	if( ! map.getCenter() ){
@@ -979,10 +984,12 @@ function init() {
 				e.point,
 				{},
 				{
-					graphicName: 'cross',
-					strokeColor: '#f00',
+					graphicName: 'triangle',
+					strokeColor: '#FFF',
 					strokeWidth: 2,
-					fillOpacity: 0,
+					width: '30px;',
+					fillOpacity: 1,
+					fillColor: 	'#f00',
 					pointRadius: 10
 				}
 			),
@@ -997,19 +1004,44 @@ function init() {
 	geolocate.events.register("locationfailed",this,function() {
 		OpenLayers.Console.log('Location detection failed');
 	});
-	geolocate.watch = true;
+	if(watch == 'on')
+	{
+		geolocate.watch = true;
+	}
 	firstGeolocation = true;
 	geolocate.activate();
 }
+</script>
+<script src="js/jquery-1.11.3.min.js" type="text/javascript"></script>
+<script>
+$(document).ready(function()
+{
+	init('off');
+	$(".refresh").on("click", function()
+	{
+		$(".track").css('opacity','1');
+		location.reload();
+	});
+	$(".track").on("click", function()
+	{
+		$("#map").html('');
+		$(".track").css('opacity','0');
+		$(".refresh").attr('value','Stop volgen');
+		init('on');
+	});
+});
 
 </script>
 </head>
  
 <!-- body.onload is called once the page is loaded (call the 'init' function) -->
-<body onload="init();">
+<body>
  
     <!-- define a DIV into which the map will appear. Make it take up the whole window -->
-    <div style="width:100%; height:100%" id="map"></div>
+    <div style="width:100%; height:calc(100% - 60px)" id="map"></div>
+	<div style="width:100%; height: 60px; line-height: 60px; background: #cc0001; position: fixed; bottom: 0px; left:0px;">
+		<p align="center" style="margin: 0; padding: 0; "><input type="button" class="refresh" value="Spring naar mijn locatie" /> <input type="button" class="track" value="Volg mij" /></p>
+	</div>
 
  
 </body>

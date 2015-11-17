@@ -1,7 +1,10 @@
 body{
 	margin: 0; padding: 0;	
+
 }
+
 div.olMap {
+	/*background: url('noImage.png') center top repeat;*/
     z-index: 0;
     padding: 0 !important;
     margin: 0 !important;
@@ -516,4 +519,8 @@ a.olControlZoomOut {
 /* override any max-width image settings (e.g. bootstrap.css) */
 img.olTileImage {
     max-width: none;
+}
+img.olImageLoadError{
+    display: block !important;
+	content: url('noImage.png');
 }
