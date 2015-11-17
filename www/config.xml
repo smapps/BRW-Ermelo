@@ -69,9 +69,7 @@
 	<preference name="FadeSplashScreen" value="true" />
 	<preference name="fade-splash-screen-duration" value="1" />	
 
-	
-	
-	<plugin name="cordova-plugin-crop" spec="~0.1.0" />
+
     <author href="https://www.smapps.nl" email="info@smapps.nl">
         SMAPPS
     </author>
