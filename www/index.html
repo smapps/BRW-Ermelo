@@ -3,6 +3,7 @@
     <title>OSM Local Tiles</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css" type="text/css" />
+	<script src="js/init.js"></script>
     <script src="OpenLayers.js"></script>
     <script type="text/javascript">
 var lat=52.2910937;
@@ -10,7 +11,12 @@ var lon=5.606251;
 var zoom=14;
 
 var map; //complex object of type OpenLayers.Map
- 
+
+var style = {
+    fillColor: '#000',
+    fillOpacity: 0.1,
+    strokeWidth: 0
+}; 
         //Initialise the 'map' object
 function init() {
 
@@ -34,7 +40,6 @@ function init() {
 
 
 	var newLayer = new OpenLayers.Layer.OSM("Local Tiles", "tiles/${z}/${x}/${y}.png", {numZoomLevels: 19, alpha: true, isBaseLayer: true});
-	//var newLayer = new OpenLayers.Layer.OSM( "Simple OSM Map");
 	map.addLayer(newLayer);
 
 	if( ! map.getCenter() ){
@@ -910,9 +915,93 @@ function init() {
     map.addLayer(vectorLayer);
 	
 	
+	
+	
+	//GEO LOCATION
+	var vector = new OpenLayers.Layer.Vector('vector');
+	map.addLayer(vector);
+	 
+	var pulsate = function(feature) {
+		var point = feature.geometry.getCentroid(),
+			bounds = feature.geometry.getBounds(),
+			radius = Math.abs((bounds.right - bounds.left)/2),
+			count = 0,
+			grow = 'up';
 
-			
+		var resize = function(){
+			if (count>16) {
+				clearInterval(window.resizeInterval);
+			}
+			var interval = radius * 0.03;
+			var ratio = interval/radius;
+			switch(count) {
+				case 4:
+				case 12:
+					grow = 'down'; break;
+				case 8:
+					grow = 'up'; break;
+			}
+			if (grow!=='up') {
+				ratio = - Math.abs(ratio);
+			}
+			feature.geometry.resize(1+ratio, point);
+			vector.drawFeature(feature);
+			count++;
+		};
+		window.resizeInterval = window.setInterval(resize, 50, point, radius);
+	};
+
+	
+	var geolocate = new OpenLayers.Control.Geolocate({
+		bind: true,
+		geolocationOptions: {
+			enableHighAccuracy: true,
+			maximumAge: 0,
+			timeout: 7000
+		}
+	});
+	map.addControl(geolocate);
+	var firstGeolocation = true;
+	geolocate.events.register("locationupdated",geolocate,function(e) {
+		vector.removeAllFeatures();
+		var circle = new OpenLayers.Feature.Vector(
+			OpenLayers.Geometry.Polygon.createRegularPolygon(
+				new OpenLayers.Geometry.Point(e.point.x, e.point.y),
+				e.position.coords.accuracy/2,
+				40,
+				0
+			),
+			{},
+			style
+		);
+		vector.addFeatures([
+			new OpenLayers.Feature.Vector(
+				e.point,
+				{},
+				{
+					graphicName: 'cross',
+					strokeColor: '#f00',
+					strokeWidth: 2,
+					fillOpacity: 0,
+					pointRadius: 10
+				}
+			),
+			circle
+		]);
+		if (firstGeolocation) {
+			pulsate(circle);
+			firstGeolocation = false;
+			this.bind = true;
+		}
+	});
+	geolocate.events.register("locationfailed",this,function() {
+		OpenLayers.Console.log('Location detection failed');
+	});
+	geolocate.watch = true;
+	firstGeolocation = true;
+	geolocate.activate(); 
 }
+
 </script>
 </head>
  
@@ -921,6 +1010,7 @@ function init() {
  
     <!-- define a DIV into which the map will appear. Make it take up the whole window -->
     <div style="width:100%; height:100%" id="map"></div>
+
  
 </body>
  
