@@ -3,7 +3,6 @@
     <title>OSM Local Tiles</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css" type="text/css" />
-	<script src="js/init.js"></script>
     <script src="OpenLayers.js"></script>
     <script type="text/javascript">
 var lat=52.2910937;
@@ -45,10 +44,7 @@ function init(watch) {
 	
 
 	var newLayer = new OpenLayers.Layer.OSM("Local Tiles", "tiles/${z}/${x}/${y}.png", {numZoomLevels: 19, alpha: true, isBaseLayer: true});
-<<<<<<< HEAD
 	
-=======
->>>>>>> origin/master
 	map.addLayer(newLayer);
 
 	if( ! map.getCenter() ){
@@ -936,7 +932,6 @@ function init(watch) {
 			radius = Math.abs((bounds.right - bounds.left)/2),
 			count = 0,
 			grow = 'up';
-<<<<<<< HEAD
 
 		var resize = function(){
 			if (count>16) {
@@ -961,32 +956,6 @@ function init(watch) {
 		window.resizeInterval = window.setInterval(resize, 50, point, radius);
 	};
 
-=======
-
-		var resize = function(){
-			if (count>16) {
-				clearInterval(window.resizeInterval);
-			}
-			var interval = radius * 0.03;
-			var ratio = interval/radius;
-			switch(count) {
-				case 4:
-				case 12:
-					grow = 'down'; break;
-				case 8:
-					grow = 'up'; break;
-			}
-			if (grow!=='up') {
-				ratio = - Math.abs(ratio);
-			}
-			feature.geometry.resize(1+ratio, point);
-			vector.drawFeature(feature);
-			count++;
-		};
-		window.resizeInterval = window.setInterval(resize, 50, point, radius);
-	};
-
->>>>>>> origin/master
 	
 	var geolocate = new OpenLayers.Control.Geolocate({
 		bind: true,
@@ -1015,19 +984,12 @@ function init(watch) {
 				e.point,
 				{},
 				{
-<<<<<<< HEAD
 					graphicName: 'triangle',
 					strokeColor: '#FFF',
 					strokeWidth: 2,
 					width: '30px;',
 					fillOpacity: 1,
 					fillColor: 	'#f00',
-=======
-					graphicName: 'cross',
-					strokeColor: '#f00',
-					strokeWidth: 2,
-					fillOpacity: 0,
->>>>>>> origin/master
 					pointRadius: 10
 				}
 			),
@@ -1042,20 +1004,13 @@ function init(watch) {
 	geolocate.events.register("locationfailed",this,function() {
 		OpenLayers.Console.log('Location detection failed');
 	});
-<<<<<<< HEAD
 	if(watch == 'on')
 	{
 		geolocate.watch = true;
 	}
 	firstGeolocation = true;
 	geolocate.activate();
-=======
-	geolocate.watch = true;
-	firstGeolocation = true;
-	geolocate.activate(); 
->>>>>>> origin/master
 }
-
 </script>
 <script src="js/jquery-1.11.3.min.js" type="text/javascript"></script>
 <script>
@@ -1083,14 +1038,10 @@ $(document).ready(function()
 <body>
  
     <!-- define a DIV into which the map will appear. Make it take up the whole window -->
-<<<<<<< HEAD
     <div style="width:100%; height:calc(100% - 60px)" id="map"></div>
 	<div style="width:100%; height: 60px; line-height: 60px; background: #cc0001; position: fixed; bottom: 0px; left:0px;">
 		<p align="center" style="margin: 0; padding: 0; "><input type="button" class="refresh" value="Spring naar mijn locatie" /> <input type="button" class="track" value="Volg mij" /></p>
 	</div>
-=======
-    <div style="width:100%; height:100%" id="map"></div>
->>>>>>> origin/master
 
  
 </body>
