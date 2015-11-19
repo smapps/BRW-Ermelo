@@ -2,7 +2,10 @@ body{
 	margin: 0; padding: 0;	
 
 }
-
+#map
+{
+	height : 1000px;
+}
 div.olMap {
 	/*background: url('noImage.png') center top repeat;*/
     z-index: 0;
