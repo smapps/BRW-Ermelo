@@ -40,6 +40,9 @@
 	<icon src="./images/system/57.png" gap:platform="ios" width="57" height="57" />
 	<icon src="./images/system/72.png" gap:platform="ios" width="72" height="72" />
 	<icon src="./images/system/114.png" gap:platform="ios" width="114" height="114" />
+	<!-- iPad -->
+	<icon src="./images/system/76.png" platform="ios" width="76" height="76" />
+	<icon src="./images/system/76@2x.png" platform="ios" width="152" height="152" />
 	
 	<icon src="./images/system/48.png" gap:platform="android" gap:density="ldpi" />
 	<icon src="./images/system/48.png" gap:platform="android" gap:density="mdpi" />
@@ -60,6 +63,7 @@
 	<gap:splash src="./images/system/ios/Default-Portrait@2x~ipad.png" gap:platform="ios" width="1536" height="2048"/>
 	<gap:splash src="./images/system/ios/Default-568h@2x~iphone.png" gap:platform="ios"  width="640" height="1136"/>
 	<gap:splash src="./images/system/ios/Default-667h.png" gap:platform="ios" width="750" height="1334"/>
+
 	<gap:splash src="./images/system/ios/Default-736h.png" gap:platform="ios" width="1242" height="2208"/>
 
 
